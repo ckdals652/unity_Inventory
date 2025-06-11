@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChangePage : MonoBehaviour
 {
-    public Dictionary<string,Canvas> ListCanvas = new Dictionary<string,Canvas>();
+    public Dictionary<string,Canvas> dictionaryCanvas = new Dictionary<string,Canvas>();
 
     private string UIMain = "UIMain";
     private string UIInventory = "UIInventory";
@@ -19,7 +19,7 @@ public class ChangePage : MonoBehaviour
 
     public void SetCanvas()
     {
-        ListCanvas.Clear();
+        dictionaryCanvas.Clear();
 
         Canvas[] canvases = FindObjectsOfType<Canvas>(true); // true: 비활성화된 것도 포함
 
@@ -29,9 +29,10 @@ public class ChangePage : MonoBehaviour
             //Debug.Log(canvas.name);
             string canvasName = canvas.gameObject.name;
 
-            if (!ListCanvas.ContainsKey(canvasName))
+            //딕셔너리 이름 키에 같은 이름이 없을 때 추가
+            if (!dictionaryCanvas.ContainsKey(canvasName))
             {
-                ListCanvas.Add(canvasName, canvas);
+                dictionaryCanvas.Add(canvasName, canvas);
             }
             else
             {
@@ -42,21 +43,28 @@ public class ChangePage : MonoBehaviour
 
     public void OnPage(string pageName)
     {
-        foreach (KeyValuePair<string, Canvas> kvp in ListCanvas)
+        // foreach (KeyValuePair<string, Canvas> kvp in dictionaryCanvas)
+        // {
+        //     if (kvp.Key == pageName)
+        //     {
+        //         kvp.Value.gameObject.SetActive(true);
+        //     }
+        //     // else if (kvp.Key == UIBase)
+        //     // {
+        //     //     kvp.Value.gameObject.SetActive(true);
+        //     // }
+        //     else
+        //     {
+        //         kvp.Value.gameObject.SetActive(false);
+        //     }
+        // }
+        //
+        // dictionaryCanvas[UIBase].gameObject.SetActive(true);
+        
+        foreach (var kvp in dictionaryCanvas)
         {
-            if (kvp.Key == pageName)
-            {
-                kvp.Value.gameObject.SetActive(true);
-            }
-            else if (kvp.Key == UIBase)
-            {
-                kvp.Value.gameObject.SetActive(true);
-            }
-            else
-            {
-                kvp.Value.gameObject.SetActive(false);
-            }
-            
+            bool isActive = (kvp.Key == pageName || kvp.Key == UIBase);
+            kvp.Value.gameObject.SetActive(isActive);
         }
     }
 }
